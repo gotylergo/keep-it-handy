@@ -21,8 +21,15 @@ export default function Home() {
   const [searchResults, setSearchResults] = useState<string[] | null>(null);
   const { toast } = useToast();
 
-  const handleLogin = () => {
+  const handleLogin = (response: any) => {
+    // Here you would typically validate the credential response on your backend
+    // For this example, we'll just consider any response as successful login
+    console.log("ID: " + response.credential);
     setIsAuthenticated(true);
+    toast({
+      title: "Signed in!",
+      description: "You have successfully signed in.",
+    });
   };
 
   const handleCreateNote = (newNote: string) => {

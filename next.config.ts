@@ -24,6 +24,10 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // This is needed for the Google Sign-in button to render correctly
+  experimental: {
+    serverComponentsExternalPackages: ['@react-oauth/google'],
+  },
 };
 
 export default nextConfig;
