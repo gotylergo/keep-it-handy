@@ -28,6 +28,11 @@ const nextConfig: NextConfig = {
   experimental: {
     serverComponentsExternalPackages: ['@react-oauth/google'],
   },
+  // Ignore the manifest file during build
+  webpack: (config) => {
+    config.resolve.alias['./manifest.json'] = false;
+    return config;
+  },
 };
 
 export default nextConfig;

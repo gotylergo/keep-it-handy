@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "Keep It Handy",
+  "version": "1.0",
+  "description": "Your Google Keep notes in a Chrome Side Panel.",
+  "permissions": [
+    "identity",
+    "sidePanel"
+  ],
+  "oauth2": {
+    "client_id": "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email",
+      "https://www.googleapis.com/auth/userinfo.profile"
+    ]
+  },
+  "action": {
+    "default_title": "Open Keep It Handy"
+  },
+  "side_panel": {
+    "default_path": "index.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
+}

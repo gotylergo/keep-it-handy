@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import LoginPage from "@/components/login-page";
 import AppLayout from "@/components/app-layout";
 import { useToast } from "@/hooks/use-toast";
@@ -21,15 +21,47 @@ export default function Home() {
   const [searchResults, setSearchResults] = useState<string[] | null>(null);
   const { toast } = useToast();
 
-  const handleLogin = (response: any) => {
-    // Here you would typically validate the credential response on your backend
-    // For this example, we'll just consider any response as successful login
-    console.log("ID: " + response.credential);
-    setIsAuthenticated(true);
-    toast({
-      title: "Signed in!",
-      description: "You have successfully signed in.",
-    });
+  useEffect(() => {
+    // Check if the user is already authenticated when the app loads
+    if (typeof chrome !== "undefined" && chrome.identity) {
+        chrome.identity.getAuthToken({ interactive: false }, (token) => {
+            if (chrome.runtime.lastError) {
+                console.log(chrome.runtime.lastError.message);
+                setIsAuthenticated(false);
+            } else if (token) {
+                setIsAuthenticated(true);
+            }
+        });
+    }
+  }, []);
+
+
+  const handleLogin = () => {
+    if (typeof chrome !== "undefined" && chrome.identity) {
+      chrome.identity.getAuthToken({ interactive: true }, (token) => {
+        if (chrome.runtime.lastError) {
+          toast({
+            title: "Authentication failed",
+            description: chrome.runtime.lastError.message,
+            variant: "destructive",
+          });
+          return;
+        }
+        if (token) {
+          setIsAuthenticated(true);
+          toast({
+            title: "Signed in!",
+            description: "You have successfully signed in.",
+          });
+        }
+      });
+    } else {
+        toast({
+            title: "Not in an extension",
+            description: "This app is designed to run as a Chrome extension.",
+            variant: "destructive",
+        })
+    }
   };
 
   const handleCreateNote = (newNote: string) => {
