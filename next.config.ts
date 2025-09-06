@@ -2,6 +2,7 @@ import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
   /* config options here */
+  distDir: 'dist',
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -26,6 +27,7 @@ const nextConfig: NextConfig = {
     ],
   },
   output: 'export',
+  assetPrefix: './',
 };
 
 export default nextConfig;
