@@ -24,10 +24,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  // This is needed for the Google Sign-in button to render correctly
-  experimental: {
-    serverComponentsExternalPackages: ['@react-oauth/google'],
-  },
+  output: 'export',
   // Ignore the manifest file during build
   webpack: (config) => {
     config.resolve.alias['./manifest.json'] = false;
