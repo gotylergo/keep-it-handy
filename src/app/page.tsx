@@ -56,6 +56,8 @@ export default function Home() {
         }
       });
     } else {
+        // This part will run during server-side rendering or in a normal browser
+        // We can't log in here, so we show a message.
         toast({
             title: "Not in an extension",
             description: "This app is designed to run as a Chrome extension.",

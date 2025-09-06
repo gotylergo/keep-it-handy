@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
@@ -25,11 +26,6 @@ const nextConfig: NextConfig = {
     ],
   },
   output: 'export',
-  // Ignore the manifest file during build
-  webpack: (config) => {
-    config.resolve.alias['./manifest.json'] = false;
-    return config;
-  },
 };
 
 export default nextConfig;
