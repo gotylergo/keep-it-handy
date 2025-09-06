@@ -3,7 +3,6 @@
 import { useState } from "react";
 import LoginPage from "@/components/login-page";
 import AppLayout from "@/components/app-layout";
-import { searchKeepNotesWithAI } from "@/ai/flows/search-keep-notes-with-ai";
 import { useToast } from "@/hooks/use-toast";
 
 const initialNotes = [
@@ -20,7 +19,6 @@ export default function Home() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [notes, setNotes] = useState<string[]>(initialNotes);
   const [searchResults, setSearchResults] = useState<string[] | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
   const handleLogin = () => {
@@ -38,30 +36,20 @@ export default function Home() {
     }
   };
 
-  const handleSearch = async (query: string) => {
+  const handleSearch = (query: string) => {
     if (!query.trim()) {
       setSearchResults(null);
       return;
     }
-    setIsLoading(true);
-    try {
-      const relevantNotes = await searchKeepNotesWithAI({ query, notes });
-      setSearchResults(relevantNotes);
-      if (relevantNotes.length === 0) {
-        toast({
-          title: "No relevant notes found",
-          description: "Try a different search query.",
-        });
-      }
-    } catch (error) {
-      console.error("AI search failed:", error);
+    const results = notes.filter((note) =>
+      note.toLowerCase().includes(query.toLowerCase())
+    );
+    setSearchResults(results);
+    if (results.length === 0) {
       toast({
-        variant: "destructive",
-        title: "Search Error",
-        description: "Could not perform search. Please try again.",
+        title: "No notes found",
+        description: "Try a different search query.",
       });
-    } finally {
-      setIsLoading(false);
     }
   };
   
@@ -77,7 +65,7 @@ export default function Home() {
     <AppLayout
       notes={notes}
       searchResults={searchResults}
-      isLoading={isLoading}
+      isLoading={false}
       onCreateNote={handleCreateNote}
       onSearch={handleSearch}
       onClearSearch={handleClearSearch}
